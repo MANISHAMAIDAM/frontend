@@ -51,8 +51,6 @@ pipeline {
                     aws eks update-kubeconfig --region us-east-1 --name expense-dev
                     cd helm
                     sed -i 's/IMAGE_VERSION/${appVersion}/g' values.yaml
-                    helm upgrade frontend .
-                    kubectl delete deployment frontend -n expense
                     helm install frontend .
                 """
             }
