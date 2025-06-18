@@ -7,26 +7,37 @@ metadata:
   labels:
     component: frontend
     project: expense
-    tier: app
+    tier: web
 spec:
   replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
       component: frontend
       project: expense
-      tier: app
+      tier: web
   # pod definition
   template:
     metadata:
       labels:
         component: frontend
         project: expense
-        tier: app
+        tier: web
     spec:
       containers:
       - name: frontend
-        imagePullPolicy: Always
         image: 535002850032.dkr.ecr.us-east-1.amazonaws.com/expense-frontend:{{ .Values.deployment.imageVersion }}
-        envFrom:
-        - configMapRef:
-            name: frontend
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          readOnly: true
+        # envFrom:
+        # - configMapRef:
+        #     name: frontend
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: frontend
+          items:
+          - key: nginx.conf
+            path: nginx.conf
