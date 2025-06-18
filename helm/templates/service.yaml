@@ -4,11 +4,12 @@ metadata:
   name: frontend
   namespace: expense
 spec:
+  type: LoadBalancer
   selector:
     component: frontend
     project: expense
-    tier: app
+    tier: web
   ports:
   - protocol: TCP
-    port: 8080 #service-port
-    targetPort: 8080 #target-port
+    port: 80 #service-port
+    targetPort: {{ .Values.configmap.port }} #target-port
