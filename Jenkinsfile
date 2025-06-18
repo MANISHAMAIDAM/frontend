@@ -52,6 +52,8 @@ pipeline {
                     cd helm
                     sed -i 's/IMAGE_VERSION/${appVersion}/g' values.yaml
                     helm upgrade frontend .
+                    kubectl delete deployment frontend -n expense
+                    helm install frontend .
                 """
             }
         }
